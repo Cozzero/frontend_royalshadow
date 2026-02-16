@@ -7,14 +7,9 @@ function Login() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const login = async () => {
-    setLoading(true);
-    setError("");
-
     try {
       const res = await api.post("login/", {
         username,
@@ -24,35 +19,24 @@ function Login() {
       localStorage.setItem("token", res.data.access);
 
       navigate("/");
-    } catch (err) {
-      setError("Invalid username or password");
-    } finally {
-      setLoading(false);
+    } catch {
+      setError("Invalid credentials");
     }
   };
 
   return (
-    <div style={{ padding: "40px" }}>
+    <div style={{ padding: 40 }}>
       <h2>Login</h2>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <input
-        placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
+      <input placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
       <br /><br />
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
       <br /><br />
 
-      <button onClick={login} disabled={loading}>
-        {loading ? "Logging in..." : "Login"}
-      </button>
+      <button onClick={login}>Login</button>
     </div>
   );
 }
